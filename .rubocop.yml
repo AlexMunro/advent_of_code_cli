@@ -1,0 +1,15 @@
+Style/StringLiterals:
+  StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#consistent-string-literals'
+  EnforcedStyle: "double_quotes"
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+Style/TrailingCommaInArguments:
+  Enabled: false
+Style/TrailingCommaInHashLiteral:
+  Enabled: false
+Gemspec/RequiredRubyVersion:
+  Enabled: false
+
+# Default cop settings
+AllCops:
+  NewCops: enable
