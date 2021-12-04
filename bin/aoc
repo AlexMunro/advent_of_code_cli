@@ -1,25 +1,4 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require "optparse"
-require_relative "../lib/advent_of_code_cli" # Change to gem name
-
-command = ARGV.shift
-
-options = {}
-
-OptionParser.new do |opts|
-  opts.on("-d", "--day", Integer, "Day") do |day|
-    options[:day] = day
-  end
-end
-
-case command
-when "init"
-  AdventOfCodeCLI.init_aoc
-when "prepare"
-  AdventOfCodeCLI.prepare(options[:day])
-else
-  puts "Unrecognised command"
-  exit 1
-end
+require_relative "../lib/advent_of_code_cli/cli"
