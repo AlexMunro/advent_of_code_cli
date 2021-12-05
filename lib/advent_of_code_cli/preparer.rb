@@ -31,7 +31,7 @@ module AdventOfCodeCLI
     end
 
     def create_dirs
-      ["inputs", "solutions", "spec", "spec/solutions", daily_solution_dir].each do |dir|
+      ["inputs", "solutions", "spec", "spec/solutions", daily_solution_dir, daily_spec_dir].each do |dir|
         Dir.mkdir dir unless Dir.exist? dir
       end
     end
@@ -71,14 +71,14 @@ module AdventOfCodeCLI
     end
 
     def create_spec_file
-      filename = "spec/solutions/day#{double_digit_day}_spec.rb"
+      filename = "spec/solutions/day#{double_digit_day}/day#{double_digit_day}_spec.rb"
       return if File.exist? filename
 
       File.open(filename, "w") do |file|
         file.puts [
           "# frozen_string_literal: true",
           "",
-          "require \"./solutions/day#{double_digit_day}/day#{double_digit_day}\"",
+          "require \"./#{daily_solution_dir}/day#{double_digit_day}\"",
           "",
           "RSpec.describe Day#{double_digit_day} do",
           "end",
@@ -94,6 +94,10 @@ module AdventOfCodeCLI
 
     def daily_solution_dir
       "solutions/day#{double_digit_day}"
+    end
+
+    def daily_spec_dir
+      "spec/solutions/day#{double_digit_day}"
     end
 
     def write_solution_script_template(part)
@@ -120,6 +124,11 @@ module AdventOfCodeCLI
           "# frozen_string_literal: true",
           "",
           "class Day#{double_digit_day}",
+          "  INPUT = \"../../inputs/day#{double_digit_day}.txt\"",
+          "",
+          "  def self.input",
+          "  end",
+          "",
           "  def self.part_one",
           "  end",
           "",
