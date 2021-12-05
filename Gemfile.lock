@@ -1,7 +1,9 @@
 PATH
   remote: .
   specs:
-    advent_of_code_cli (0.2.0)
+    advent_of_code_cli (0.3.0)
+      httparty
+      nokogiri
       thor
 
 GEM
@@ -9,9 +11,19 @@ GEM
   specs:
     ast (2.4.2)
     diff-lcs (1.4.4)
+    httparty (0.20.0)
+      mime-types (~> 3.0)
+      multi_xml (>= 0.5.2)
+    mime-types (3.4.1)
+      mime-types-data (~> 3.2015)
+    mime-types-data (3.2021.1115)
+    multi_xml (0.6.0)
+    nokogiri (1.12.5-x86_64-linux)
+      racc (~> 1.4)
     parallel (1.21.0)
     parser (3.0.3.1)
       ast (~> 2.4.1)
+    racc (1.6.0)
     rainbow (3.0.0)
     rake (10.5.0)
     regexp_parser (2.1.1)

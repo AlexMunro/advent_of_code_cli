@@ -3,7 +3,7 @@
 require "fileutils"
 
 require_relative "./config"
-require_relative "../advent_of_code_cli"
+require_relative "./preparer"
 
 module AdventOfCodeCLI
   # Responsible for setting up for a particular day of AOC,
@@ -37,29 +37,27 @@ module AdventOfCodeCLI
     end
 
     def create_input_file
-      # TODO: find a less scary way of doing stuff than URI.open
-      #
       file_name = "inputs/day#{double_digit_day}.txt"
       return if File.exist? file_name
 
-      File.open(file_name, "w") { |f| f << fetch_input_from_remote }
-      #   case response = fetch_input_from_remote
-      #   when Net::HTTPSuccess
-      #     File.open(file_name, "w") { |f| f << response.body }
-      #   when Net::HTTPForbidden
-      #     puts "Could not access the input file. Is your session key correct?"
-      #   when Net::HTTPNotFound
-      #     if response.body.include? "unlock"
-      #       puts "Input for #{day} is not available yet. Be patient!"
-      #     else
-      #       puts "Input for #{day} not found. Ensure that day is a number between 1 and 25."
-      #     end
-      #   else
-      #     puts "Fetching request failed with HTTP code #{response.code}"
-      #     puts response.body
-      #     puts response["Location"]
-      #   end
-      # end
+      httparty_response = WebClient.get_input(@year, @day, @session_cookie)
+
+      case httparty_response.response
+      when Net::HTTPSuccess
+        File.open(file_name, "w") { |f| f << httparty_response.body }
+      when Net::HTTPBadRequest
+        puts "Could not access the input file. Is your session key correct?"
+      when Net::HTTPNotFound
+        if response.body.include? "unlock"
+          puts "Input for #{day} is not available yet. Be patient!"
+        else
+          puts "Input for #{day} not found. Ensure that day is a number between 1 and 25."
+        end
+      else
+        puts "Fetching request failed with HTTP code #{response.code}"
+        puts response.body
+        puts response["Location"]
+      end
     end
 
     def create_solution_files
@@ -108,7 +106,7 @@ module AdventOfCodeCLI
           "# frozen_string_literal: true",
           "",
           "require_relative \"./day#{double_digit_day}\"",
-          "puts \"The answer to part one is #\{Day#{double_digit_day}.part_#{part}\}\"",
+          "puts \"The answer to part #{part} is #\{Day#{double_digit_day}.part_#{part}\}\"",
         ]
       end
     end
@@ -132,10 +130,8 @@ module AdventOfCodeCLI
       end
     end
 
-    def fetch_input_from_remote
-      uri = URI("#{AdventOfCodeCLI::AOC_URL}/#{@year}/day/#{format('%1d', @day)}/input")
-      puts "Fetching input file from remote server via #{uri}"
-      URI.open(uri, "Cookie" => "session=#{@session_cookie}").read
+    def header
+      { "Cookie" => "session=#{@session_cookie}" }
     end
   end
 end
