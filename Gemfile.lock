@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    advent_of_code_cli (0.3.2)
+    advent_of_code_cli (0.3.3)
       httparty
       nokogiri
       thor

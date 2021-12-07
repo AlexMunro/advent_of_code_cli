@@ -124,7 +124,7 @@ module AdventOfCodeCLI
           "# frozen_string_literal: true",
           "",
           "class Day#{double_digit_day}",
-          "  INPUT = \"../../inputs/day#{double_digit_day}.txt\"",
+          "  INPUT = File.expand_path(\"../../inputs/day#{double_digit_day}.txt\", File.dirname(__FILE__))",
           "",
           "  def self.input",
           "  end",
